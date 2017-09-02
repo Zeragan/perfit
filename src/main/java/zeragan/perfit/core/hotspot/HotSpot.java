@@ -1,4 +1,4 @@
-package zeragan.perfit.hotspot;
+package zeragan.perfit.core.hotspot;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;

@@ -1,4 +1,4 @@
-package zeragan.perfit.source;
+package zeragan.perfit.profiling;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -11,8 +11,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.xml.sax.InputSource;
 
 import zeragan.perfit.core.NodeSource;
-import zeragan.perfit.core.NodeSourceBuilder;
-import zeragan.perfit.profiling.Profiler;
+import zeragan.perfit.core.NodeSourceAdapter;
+import zeragan.perfit.core.configuration.NodeSourceBuilder;
 import zeragan.perfit.profiling.time.DefaultTimeSource;
 
 @Aspect

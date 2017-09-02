@@ -1,6 +1,4 @@
-package zeragan.perfit.source;
-
-import zeragan.perfit.core.NodeSource;
+package zeragan.perfit.core;
 
 public interface NodeSourceAdapter
 {

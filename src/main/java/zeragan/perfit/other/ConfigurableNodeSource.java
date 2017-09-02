@@ -1,9 +1,10 @@
-package zeragan.perfit.source;
+package zeragan.perfit.other;
 
 import org.xml.sax.InputSource;
 
 import zeragan.perfit.core.NodeSource;
-import zeragan.perfit.core.NodeSourceBuilder;
+import zeragan.perfit.core.NodeSourceAdapter;
+import zeragan.perfit.core.configuration.NodeSourceBuilder;
 
 public class ConfigurableNodeSource implements NodeSourceAdapter
 {
