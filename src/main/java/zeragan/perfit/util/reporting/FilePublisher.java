@@ -30,7 +30,7 @@ public class FilePublisher implements TextualReportPublisher {
     @Override
     public void publish(String text) {
         try {
-            Files.write(Paths.get(fileName), text.getBytes(), StandardOpenOption.CREATE);
+            Files.write(Paths.get(fileName), text.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

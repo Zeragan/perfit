@@ -14,13 +14,15 @@ import zeragan.perfit.util.reporting.DefaultTextualReportPublisher;
 
 abstract class AbstractCollector implements NodeCollector {
 
+    private CollectedData collectedData = null;
+
     protected AbstractCollector(org.w3c.dom.Node conf) throws IOException, ReflectiveOperationException {
         super();
 
         NodeList parameters = conf.getChildNodes();
         for (int index = 0; index < parameters.getLength(); index++) {
             org.w3c.dom.Node parameter = parameters.item(index);
-            if ("logOnShutdown".equals(parameter.getNodeName())) {
+            if ("collectOnShutdown".equals(parameter.getNodeName())) {
                 TextualReportGenerator generatorTmp = null;
                 org.w3c.dom.Node generatorName = parameter.getAttributes().getNamedItem("generator");
                 if (generatorName != null) {
@@ -46,8 +48,24 @@ abstract class AbstractCollector implements NodeCollector {
     }
 
     @Override
+    public void activate(CollectedData collectedData) {
+        if (this.collectedData != null) {
+            throw new IllegalStateException();
+        }
+        if (collectedData == null) {
+            throw new IllegalArgumentException();
+        }
+        this.collectedData = collectedData;
+    }
+
+    @Override
+    public void deactivate() {
+        this.collectedData = null;
+    }
+
+    @Override
     public boolean isActive() {
-        return true;
+        return collectedData != null;
     }
 
     @Override
@@ -58,6 +76,11 @@ abstract class AbstractCollector implements NodeCollector {
     @Override
     public void exit(Node node) {
 
+    }
+
+    @Override
+    public CollectedData getData() {
+        return collectedData;
     }
 
 }

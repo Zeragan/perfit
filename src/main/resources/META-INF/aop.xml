@@ -1,0 +1,11 @@
+<aspectj>
+	<aspects>
+		<concrete-aspect name="ClassycleAspect" extends="zeragan.perfit.profiling.AspectJProfiler">
+			<pointcut name="pointcut" expression="execution(* *..*(..))" />
+		</concrete-aspect>
+	</aspects>
+	<weaver>
+		<!-- override this to define what packages you want to profile -->
+		<!-- <include within="john.doe..*" /> -->
+	</weaver>
+</aspectj>

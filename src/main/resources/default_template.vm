@@ -1,0 +1,68 @@
+<html>
+<head>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+.right {
+	text-align: right;
+}
+</style>
+</head>
+  <body>
+    <h1>PerfIt Html Report</h1>
+    <h2>Id $data.getSourceId()</h2>
+    <h3>
+	    <p>Date : $data.getDatetime()</p>
+	    <p>Time Unit : $data.getTimeUnit()</p>
+    </h3>
+    <table id="hotspots" class="display" cellspacing="0" width="100%" >
+    	<thead>
+            <tr>
+                <th>Hot Spot</th>
+                <th>Hit Count</th>
+                <th>Inner Time</th>
+                <th>Average Inner Time</th>
+                <th>Outer Time</th>
+                <th>Average Outer Time</th>
+            </tr>
+        </thead>
+    
+    #foreach( $hotspot in  $data.getHotSpots() )
+        <tr>
+          <td>
+            $hotspot.getNodeName()
+          </td>
+          <td class="right">
+            $hotspot.getHitCount()
+          </td>
+          <td class="right">
+            $hotspot.getInnerTime()
+          </td>
+          <td class="right">
+            $hotspot.getAverageInnerTime()
+          </td>
+          <td class="right">
+            $hotspot.getTotalTime()
+          </td>
+          <td class="right">
+            $hotspot.getAverageTotalTime()
+          </td>
+        </tr>
+    #end
+    </table>
+  </body>
+</html>

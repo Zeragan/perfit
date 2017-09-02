@@ -1,8 +1,14 @@
 package zeragan.perfit.core;
 
-public interface NodeSource
-{
-    
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+public interface NodeSource {
+
+    UUID getId();
+
+    TimeUnit getTimeUnit();
+
     boolean hasActiveCollector();
 
     void addNodeCollector(NodeCollector nodeCollector);

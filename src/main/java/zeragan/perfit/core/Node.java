@@ -1,18 +1,10 @@
 package zeragan.perfit.core;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-public interface Node
-{
-
-    UUID getSourceId();
+public interface Node {
 
     String getThreadName();
 
     String getNodeName();
-
-    TimeUnit getTimeUnit();
 
     long getTotalTime();
 

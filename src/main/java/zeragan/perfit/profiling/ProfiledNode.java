@@ -3,23 +3,16 @@ package zeragan.perfit.profiling;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import zeragan.perfit.core.Node;
 
-public final class ProfiledNode implements Serializable, Node
-{
+public final class ProfiledNode implements Serializable, Node {
 
     private static final long serialVersionUID = 1L;
-
-    private final UUID sourceId;
 
     private final String threadName;
 
     private final String nodeName;
-
-    private final TimeUnit timeUnit;
 
     private ProfiledNode parent;
 
@@ -65,18 +58,13 @@ public final class ProfiledNode implements Serializable, Node
      */
     private Long innerTime;
 
-    ProfiledNode(UUID sourceId, ProfiledNode parent, String threadName, String nodeName, TimeUnit timeUnit)
-    {
+    ProfiledNode(ProfiledNode parent, String threadName, String nodeName) {
         super();
-        this.sourceId = sourceId;
         this.parent = parent;
         this.threadName = threadName;
         this.nodeName = nodeName;
-        this.timeUnit = timeUnit;
-        if (parent != null)
-        {
-            if (parent.subs == null)
-            {
+        if (parent != null) {
+            if (parent.subs == null) {
                 throw new IllegalStateException("parent measure is already closed, can't create sub-measure");
             }
             parent.subs.add(this);
@@ -84,27 +72,13 @@ public final class ProfiledNode implements Serializable, Node
     }
 
     @Override
-    public UUID getSourceId()
-    {
-        return sourceId;
-    }
-
-    @Override
-    public final String getThreadName()
-    {
+    public final String getThreadName() {
         return threadName;
     }
 
     @Override
-    public final String getNodeName()
-    {
+    public final String getNodeName() {
         return nodeName;
-    }
-
-    @Override
-    public final TimeUnit getTimeUnit()
-    {
-        return timeUnit;
     }
 
     /**
@@ -115,30 +89,24 @@ public final class ProfiledNode implements Serializable, Node
      * If the node is not yet executed then an {@link IllegalStateException} is thrown.
      * </p>
      * <p>
-     * If the node is executed but not finalized, then the elapsed time returned is the time between the start of the
-     * execution of the node and the end of the execution of the node, meaning it include overhead induced by sub-nodes
-     * without overhead induced by this node. The formula is {@code e - b}.
+     * If the node is executed but not finalized, then the elapsed time returned is the time between the start of the execution of the node
+     * and the end of the execution of the node, meaning it include overhead induced by sub-nodes without overhead induced by this node. The
+     * formula is {@code e - b}.
      * </p>
      * <p>
-     * If the node is finalized, then the elapsed time returned is the time between the start of the profiling of the
-     * node and the end of the profiling of the node, meaning it include overhead induced by sub-nodes and overhead
-     * induced by this node. The formula is {@code ep - bp}.
+     * If the node is finalized, then the elapsed time returned is the time between the start of the profiling of the node and the end of
+     * the profiling of the node, meaning it include overhead induced by sub-nodes and overhead induced by this node. The formula is
+     * {@code ep - bp}.
      * </p>
      *
      * @return
      */
-    public final long getElapsedTime()
-    {
-        if (ep != null && bp != null)
-        {
+    public final long getElapsedTime() {
+        if (ep != null && bp != null) {
             return this.ep - this.bp;
-        }
-        else if (elapsedTime != null)
-        {
+        } else if (elapsedTime != null) {
             return elapsedTime;
-        }
-        else
-        {
+        } else {
             throw new IllegalStateException("elapsedTime is not yet available");
         }
     }
@@ -151,112 +119,87 @@ public final class ProfiledNode implements Serializable, Node
      * If the node is not yet executed then an {@link IllegalStateException} is thrown.
      * </p>
      * <p>
-     * If the node is executed but not finalized, then the overtime returned is the time induced by the profiling of
-     * sub-nodes, meaning it doesn't include overtime induced by the profiling of this node.
+     * If the node is executed but not finalized, then the overtime returned is the time induced by the profiling of sub-nodes, meaning it
+     * doesn't include overtime induced by the profiling of this node.
      * </p>
      * <p>
-     * If the node is finalized, then the overtime returned is the time induced by the profiling of sub-nodes and this
-     * node.
+     * If the node is finalized, then the overtime returned is the time induced by the profiling of sub-nodes and this node.
      * </p>
      *
      * @return
      */
-    public final long getTotalOverTime()
-    {
-        if (totalOverTime != null && ep != null && e != null && b != null && bp != null)
-        {
+    public final long getTotalOverTime() {
+        if (totalOverTime != null && ep != null && e != null && b != null && bp != null) {
             return totalOverTime + getInnerOverTime();
-        }
-        else if (totalOverTime != null)
-        {
+        } else if (totalOverTime != null) {
             return totalOverTime;
-        }
-        else
-        {
+        } else {
             throw new IllegalStateException("total overTime is not yet available");
         }
     }
 
-    public final long getInnerOverTime()
-    {
-        if (ep != null && e != null && b != null && bp != null)
-        {
+    public final long getInnerOverTime() {
+        if (ep != null && e != null && b != null && bp != null) {
             return ep - e + b - bp;
-        }
-        else
-        {
+        } else {
             throw new IllegalStateException("inner overTime is not yet available");
         }
     }
 
     @Override
-    public final long getTotalTime()
-    {
-        if (totalTime == null)
-        {
+    public final long getTotalTime() {
+        if (totalTime == null) {
             throw new IllegalStateException("totalTime is not yet available");
         }
         return totalTime;
     }
 
     @Override
-    public final long getInnerTime()
-    {
-        if (innerTime == null)
-        {
+    public final long getInnerTime() {
+        if (innerTime == null) {
             throw new IllegalStateException("innerTime is not yet available");
         }
         return innerTime;
     }
 
     @Override
-    public final String toString()
-    {
-        return "Node [threadName=" + threadName + ", nodeName=" + nodeName + ", timeUnit=" + timeUnit + ", bp=" + bp + ", b=" + b + ", e="
-            + e + ", ep=" + ep + "]";
+    public final String toString() {
+        return "Node [threadName=" + threadName + ", nodeName=" + nodeName + ", bp=" + bp + ", b=" + b + ", e="
+                + e + ", ep=" + ep + "]";
     }
 
-    final ProfiledNode getParent()
-    {
+    final ProfiledNode getParent() {
         ProfiledNode detached = parent;
         parent = null; // memory release
         return detached;
     }
 
-    final void setBeginProfiling(long tick)
-    {
+    final void setBeginProfiling(long tick) {
         this.bp = tick;
     }
 
-    final void setBegin(long tick)
-    {
+    final void setBegin(long tick) {
         this.b = tick;
     }
 
-    final void setEnd(long tick)
-    {
-        if (this.b == null || this.bp == null)
-        {
+    final void setEnd(long tick) {
+        if (this.b == null || this.bp == null) {
             throw new IllegalStateException("can't call setEnd() measure has not begun yet");
         }
-        if (this.b < this.bp)
-        {
+        if (this.b < this.bp) {
             throw new IllegalStateException("this measure is invalid");
         }
-        if (subs == null)
-        {
+        if (subs == null) {
             throw new IllegalStateException("can't call setEnd() measure is already finalized");
         }
-        if (tick < this.b)
-        {
+        if (tick < this.b) {
             throw new IllegalArgumentException("end tick mut be greater than begin tick");
         }
         this.e = tick;
         this.elapsedTime = this.e - this.b;
         long overTimeSub = 0;
         long totalTimeSub = 0;
-        for (ProfiledNode sub : subs)
-        {
+        for (ProfiledNode sub : subs) {
             overTimeSub += sub.getTotalOverTime();
             totalTimeSub += sub.getTotalTime();
         }
@@ -267,8 +210,7 @@ public final class ProfiledNode implements Serializable, Node
         this.innerTime = this.totalTime - totalTimeSub;
     }
 
-    final void setEndProfiling(long tick)
-    {
+    final void setEndProfiling(long tick) {
         this.ep = tick;
     }
 

@@ -5,10 +5,12 @@ import java.io.StringWriter;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import zeragan.perfit.core.CollectedData;
+import zeragan.perfit.core.collector.CollectedData;
 import zeragan.perfit.core.reporting.TextualReportGenerator;
 
 public class VelocityTemplateGenerator implements TextualReportGenerator {
@@ -27,6 +29,8 @@ public class VelocityTemplateGenerator implements TextualReportGenerator {
             }
         }
 
+        Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,classpath");
+        Velocity.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
         Velocity.init();
         this.template = Velocity.getTemplate(templateName);
     }

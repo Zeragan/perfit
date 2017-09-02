@@ -1,25 +1,12 @@
 package zeragan.perfit.core.hotspot;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
 import zeragan.perfit.core.Node;
 
 public class HotSpot implements Node {
 
-    private final HotSpot parent;
-
-    private final List<HotSpot> children = new ArrayList<>();
-
-    private final UUID sourceId;
-
     private final String threadName;
 
     private final String spotName;
-
-    private final TimeUnit timeUnit;
 
     private long totalTime = 0;
 
@@ -28,30 +15,20 @@ public class HotSpot implements Node {
     private int hits = 0;
 
     public HotSpot() {
-        this(null, null, null, null, null);
+        this(null, null);
+    }
+
+    public HotSpot(String hotspotName) {
+        this(null, hotspotName);
     }
 
     public HotSpot(Node initialNode) {
-        this(null, initialNode.getSourceId(), initialNode.getThreadName(), initialNode.getNodeName(), initialNode.getTimeUnit());
+        this(initialNode.getThreadName(), initialNode.getNodeName());
     }
 
-    public HotSpot(String hotspotName, TimeUnit timeUnit) {
-        this(null, null, null, hotspotName, timeUnit);
-    }
-
-    public HotSpot(HotSpot parent, String hotspotName, TimeUnit timeUnit) {
-        this(parent, null, null, hotspotName, timeUnit);
-    }
-
-    public HotSpot(HotSpot parent, UUID sourceId, String threadName, String hotspotName, TimeUnit timeUnit) {
-        this.parent = parent;
-        this.sourceId = sourceId;
+    public HotSpot(String threadName, String hotspotName) {
         this.threadName = threadName;
         this.spotName = hotspotName;
-        this.timeUnit = timeUnit;
-        if (this.parent != null) {
-            this.parent.addChild(this);
-        }
     }
 
     public void add(Node other) {
@@ -62,11 +39,6 @@ public class HotSpot implements Node {
     }
 
     @Override
-    public UUID getSourceId() {
-        return sourceId;
-    }
-
-    @Override
     public String getThreadName() {
         return threadName;
     }
@@ -74,11 +46,6 @@ public class HotSpot implements Node {
     @Override
     public String getNodeName() {
         return spotName;
-    }
-
-    @Override
-    public TimeUnit getTimeUnit() {
-        return timeUnit;
     }
 
     @Override
@@ -116,10 +83,6 @@ public class HotSpot implements Node {
         builder.append(hits);
         builder.append("]");
         return builder.toString();
-    }
-
-    private void addChild(HotSpot child) {
-        children.add(child);
     }
 
 }
