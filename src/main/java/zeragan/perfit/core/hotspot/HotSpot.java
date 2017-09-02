@@ -1,12 +1,17 @@
 package zeragan.perfit.core.hotspot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import zeragan.perfit.core.Node;
 
-public class HotSpot implements Node
-{
+public class HotSpot implements Node {
+
+    private final HotSpot parent;
+
+    private final List<HotSpot> children = new ArrayList<>();
 
     private final UUID sourceId;
 
@@ -22,26 +27,34 @@ public class HotSpot implements Node
 
     private int hits = 0;
 
-    public HotSpot()
-    {
-        this(null, null, null, null);
+    public HotSpot() {
+        this(null, null, null, null, null);
     }
 
-    public HotSpot(String hotspotName, TimeUnit timeUnit)
-    {
-        this(null, null, hotspotName, timeUnit);
+    public HotSpot(Node initialNode) {
+        this(null, initialNode.getSourceId(), initialNode.getThreadName(), initialNode.getNodeName(), initialNode.getTimeUnit());
     }
 
-    public HotSpot(UUID sourceId, String threadName, String hotspotName, TimeUnit timeUnit)
-    {
+    public HotSpot(String hotspotName, TimeUnit timeUnit) {
+        this(null, null, null, hotspotName, timeUnit);
+    }
+
+    public HotSpot(HotSpot parent, String hotspotName, TimeUnit timeUnit) {
+        this(parent, null, null, hotspotName, timeUnit);
+    }
+
+    public HotSpot(HotSpot parent, UUID sourceId, String threadName, String hotspotName, TimeUnit timeUnit) {
+        this.parent = parent;
         this.sourceId = sourceId;
         this.threadName = threadName;
         this.spotName = hotspotName;
         this.timeUnit = timeUnit;
+        if (this.parent != null) {
+            this.parent.addChild(this);
+        }
     }
 
-    public void add(Node other)
-    {
+    public void add(Node other) {
         // TODO : vérifier que other possède le même sourceId, threadName, nodeName et timeUnit
         this.totalTime += other.getTotalTime();
         this.innerTime += other.getInnerTime();
@@ -49,59 +62,49 @@ public class HotSpot implements Node
     }
 
     @Override
-    public UUID getSourceId()
-    {
+    public UUID getSourceId() {
         return sourceId;
     }
 
     @Override
-    public String getThreadName()
-    {
+    public String getThreadName() {
         return threadName;
     }
 
     @Override
-    public String getNodeName()
-    {
+    public String getNodeName() {
         return spotName;
     }
 
     @Override
-    public TimeUnit getTimeUnit()
-    {
+    public TimeUnit getTimeUnit() {
         return timeUnit;
     }
 
     @Override
-    public long getTotalTime()
-    {
+    public long getTotalTime() {
         return totalTime;
     }
 
     @Override
-    public long getInnerTime()
-    {
+    public long getInnerTime() {
         return innerTime;
     }
 
-    public int getHitCount()
-    {
+    public int getHitCount() {
         return hits;
     }
 
-    public double getAverageInnerTime()
-    {
+    public double getAverageInnerTime() {
         return innerTime / hits;
     }
 
-    public double getAverageTotalTime()
-    {
+    public double getAverageTotalTime() {
         return totalTime / hits;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("HotSpot [spotName=");
         builder.append(spotName);
@@ -113,6 +116,10 @@ public class HotSpot implements Node
         builder.append(hits);
         builder.append("]");
         return builder.toString();
+    }
+
+    private void addChild(HotSpot child) {
+        children.add(child);
     }
 
 }

@@ -14,7 +14,7 @@ public class HotSpotCollection {
     public void add(Node n) {
         HotSpot hotSpot = hotSpots.get(n.getNodeName());
         if (hotSpot == null) {
-            hotSpot = new HotSpot(n.getSourceId(), n.getThreadName(), n.getNodeName(), n.getTimeUnit());
+            hotSpot = new HotSpot(n);
             hotSpots.put(n.getNodeName(), hotSpot);
         }
         hotSpot.add(n);

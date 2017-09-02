@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import zeragan.perfit.core.reporting.TextualReportPublisher;
 
@@ -14,7 +15,16 @@ public class FilePublisher implements TextualReportPublisher {
     private final String fileName;
 
     public FilePublisher(Node confNode) {
-        this.fileName = confNode.getAttributes().getNamedItem("filename").getNodeValue();
+        String filenameTmp = null;
+        NodeList parameters = confNode.getChildNodes();
+        for (int index = 0; index < parameters.getLength(); index++) {
+            org.w3c.dom.Node parameter = parameters.item(index);
+            if ("filename".equals(parameter.getNodeName())) {
+                filenameTmp = parameter.getTextContent();
+                break;
+            }
+        }
+        this.fileName = filenameTmp;
     }
 
     @Override

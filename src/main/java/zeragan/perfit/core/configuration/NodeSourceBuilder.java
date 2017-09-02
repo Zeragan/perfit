@@ -13,6 +13,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import zeragan.perfit.core.NodeSource;
+import zeragan.perfit.core.reporting.TextualReportGeneratorBuilder;
+import zeragan.perfit.core.reporting.TextualReportPublisherBuilder;
 
 public class NodeSourceBuilder {
 
@@ -25,6 +27,18 @@ public class NodeSourceBuilder {
 
         Node configuredProfiler = xmlConf.getElementsByTagName("profiler").item(0);
         NodeSource profiler = ConfiguredObjectBuilder.build(configuredProfiler);
+
+        NodeList configuredGenerators = xmlConf.getDocumentElement().getElementsByTagName("generator");
+        for (int index = 0; index < configuredGenerators.getLength(); index++) {
+            org.w3c.dom.Node generatorConf = configuredGenerators.item(index);
+            TextualReportGeneratorBuilder.build(generatorConf);
+        }
+
+        NodeList configuredPublishers = xmlConf.getDocumentElement().getElementsByTagName("publisher");
+        for (int index2 = 0; index2 < configuredPublishers.getLength(); index2++) {
+            org.w3c.dom.Node publisherConf = configuredPublishers.item(index2);
+            TextualReportPublisherBuilder.build(publisherConf);
+        }
 
         NodeList configuredCollectors = xmlConf.getDocumentElement().getElementsByTagName("collector");
         for (int index = 0; index < configuredCollectors.getLength(); index++) {
