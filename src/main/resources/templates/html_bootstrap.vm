@@ -19,9 +19,21 @@
     <script>
     	$(document).ready(function() {
 			var table = $('#hotspots').DataTable({
-					        "paging": false
+					        "paging": false,
+					        "columns": [
+										    null,
+										    null,
+										    { "visible": false },
+										    { "orderData": 2 },
+										    { "visible": false },
+										    { "orderData": 4 },
+										    { "visible": false },
+										    { "orderData": 6 },
+										    { "visible": false },
+										    { "orderData": 8 },
+										]
 					    });
-			table.page.len( -1 ).order( [ 3, 'desc' ] ).draw();
+			table.page.len( -1 ).order( [ 4, 'desc' ] ).draw();
 		} );
     </script>
     
@@ -34,7 +46,7 @@
     	<tbody>
     		<tr><th>Id</th><td>$data.getSourceId()</td></tr>
     		<tr><th>Date</th><td>$data.getDatetime()</td></tr>
-    		<tr><th>Time Unit</th><td>$data.getTimeUnit()</td></tr>
+    		<tr><th>Precision</th><td>$data.getTimeUnit()</td></tr>
     	</tbody>
     </table>
     
@@ -44,9 +56,13 @@
             <tr>
                 <th>Hot Spot</th>
                 <th>Hit Count</th>
+                <th>Inner Time (hidden)</th>
                 <th>Inner Time (ms)</th>
+                <th>Average Inner Time (hidden)</th>
                 <th>Average Inner Time (µs)</th>
+                <th>Outer Time (hidden)</th>
                 <th>Outer Time (ms)</th>
+                <th>Average Outer Time (hidden)</th>
                 <th>Average Outer Time (µs)</th>
             </tr>
         </thead>
@@ -60,16 +76,28 @@
             $hotspot.getHitCount()
           </td>
           <td class="text-right">
-            $numberTool.format("0.00", $mathTool.div($hotspot.getInnerTime(), 1000000)) 
+            $hotspot.getInnerTime()
           </td>
           <td class="text-right">
-            $numberTool.format("0.00", $mathTool.div($hotspot.getAverageInnerTime(), 1000))
+            $numberTool.format('#,##0.00', $mathTool.div($hotspot.getInnerTime(), 1000000))
           </td>
           <td class="text-right">
-            $numberTool.format("0.00", $mathTool.div($hotspot.getTotalTime(), 1000000))
+            $hotspot.getAverageInnerTime()
           </td>
           <td class="text-right">
-            $numberTool.format("0.00", $mathTool.div($hotspot.getAverageTotalTime(), 1000))
+            $numberTool.format('#,##0.00', $mathTool.div($hotspot.getAverageInnerTime(), 1000))
+          </td>
+          <td class="text-right">
+            $hotspot.getTotalTime()
+          </td>
+          <td class="text-right">
+            $numberTool.format('#,##0.00', $mathTool.div($hotspot.getTotalTime(), 1000000))
+          </td>
+          <td class="text-right">
+            $hotspot.getAverageTotalTime()
+          </td>
+          <td class="text-right">
+            $numberTool.format('#,##0.00', $mathTool.div($hotspot.getAverageTotalTime(), 1000))
           </td>
         </tr>
     #end
