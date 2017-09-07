@@ -1,4 +1,4 @@
-package zeragan.perfit.util.reporting;
+package zeragan.perfit.util.reporting.publisher;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -32,7 +32,6 @@ public class HotSpot implements Node {
     }
 
     public void add(Node other) {
-        // TODO : vérifier que other possède le même sourceId, threadName, nodeName et timeUnit
         this.totalTime += other.getTotalTime();
         this.innerTime += other.getInnerTime();
         this.hits++;
@@ -63,11 +62,11 @@ public class HotSpot implements Node {
     }
 
     public double getAverageInnerTime() {
-        return innerTime / hits;
+        return innerTime / (double) hits;
     }
 
     public double getAverageTotalTime() {
-        return totalTime / hits;
+        return totalTime / (double) hits;
     }
 
     @Override

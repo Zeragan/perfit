@@ -1,12 +1,10 @@
 package zeragan.perfit.core.collector;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import zeragan.perfit.core.hotspot.HotSpot;
+import zeragan.perfit.core.hotspot.HotSpotCollection;
 
 public final class CollectedData {
 
@@ -16,7 +14,7 @@ public final class CollectedData {
 
     private final TimeUnit timeUnit;
 
-    private final List<HotSpot> nodes = new ArrayList<>();
+    private HotSpotCollection hotSpots;
 
     public CollectedData(UUID sourceId, TimeUnit timeUnit) {
         this.sourceId = sourceId;
@@ -35,12 +33,12 @@ public final class CollectedData {
         return timeUnit;
     }
 
-    public List<HotSpot> getHotSpots() {
-        return nodes;
+    public HotSpotCollection getHotSpots() {
+        return hotSpots;
     }
 
-    void setHotSpots(List<HotSpot> hotSpots) {
-        nodes.addAll(hotSpots);
+    void setData(HotSpotCollection dataview) {
+        this.hotSpots = dataview;
     }
 
 }

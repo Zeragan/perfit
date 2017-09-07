@@ -1,4 +1,4 @@
-package zeragan.perfit.util.reporting;
+package zeragan.perfit.util.reporting.generator;
 
 import java.io.StringWriter;
 
@@ -7,6 +7,8 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.apache.velocity.tools.generic.MathTool;
+import org.apache.velocity.tools.generic.NumberTool;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -39,6 +41,8 @@ public class VelocityTemplateGenerator implements TextualReportGenerator {
     public String generate(CollectedData data) {
         VelocityContext context = new VelocityContext();
         context.put("data", data);
+        context.put("numberTool", new NumberTool());
+        context.put("mathTool", new MathTool());
         StringWriter writer = new StringWriter();
         template.merge(context, writer);
         return writer.toString();

@@ -7,21 +7,29 @@ import zeragan.perfit.core.hotspot.HotSpotCollection;
 
 public class HotSpotCollector extends AbstractCollector {
 
-    private final HotSpotCollection collection = new HotSpotCollection();
+    private HotSpotCollection collection = null;
 
     public HotSpotCollector(org.w3c.dom.Node conf) throws IOException, ReflectiveOperationException {
         super(conf);
     }
 
     @Override
+    public void activate(CollectedData collectedData) {
+        super.activate(collectedData);
+        collection = new HotSpotCollection();
+    }
+
+    @Override
     public void exit(Node node) {
-        collection.add(node);
+        if (isActive()) {
+            collection.add(node);
+        }
     }
 
     @Override
     public CollectedData getData() {
         CollectedData data = super.getData();
-        data.setHotSpots(collection.toList());
+        data.setData(collection);
         return data;
     }
 

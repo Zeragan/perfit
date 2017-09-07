@@ -9,8 +9,8 @@ import zeragan.perfit.core.NodeCollector;
 import zeragan.perfit.core.configuration.ConfiguredServices;
 import zeragan.perfit.core.reporting.TextualReportGenerator;
 import zeragan.perfit.core.reporting.TextualReportPublisher;
-import zeragan.perfit.util.reporting.DefaultTextualReportGenerator;
-import zeragan.perfit.util.reporting.DefaultTextualReportPublisher;
+import zeragan.perfit.util.reporting.generator.DefaultTextualReportGenerator;
+import zeragan.perfit.util.reporting.publisher.DefaultTextualReportPublisher;
 
 abstract class AbstractCollector implements NodeCollector {
 

@@ -1,4 +1,4 @@
-package zeragan.perfit.util.reporting;
+package zeragan.perfit.util.reporting.generator;
 
 import java.util.stream.Collectors;
 
@@ -9,7 +9,8 @@ public class DefaultTextualReportGenerator implements TextualReportGenerator {
 
     @Override
     public String generate(CollectedData data) {
-        return data.getHotSpots().stream().map(Object::toString).collect(Collectors.joining(System.lineSeparator()));
+        return data.getHotSpots().toList().stream().map(Object::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 
 }
